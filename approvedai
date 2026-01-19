@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Approved AI Tools</title>
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+
+      /* District colors */
+      --brandBlue: #012C61;
+      --brandRed:  #D01241;
+
+      /* Pill styling (gray) */
+      --chipBg: #f3f4f6;
+      --chipBorder:#e5e7eb;
+
+      --shadow: 0 1px 2px rgba(0,0,0,.05), 0 8px 20px rgba(0,0,0,.06);
+      --radius: 14px;
+
+      --accentGradient: linear-gradient(90deg, #012C61, #2164eb);
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.35;
+    }
+
+.page{
+  width: 100%;
+  max-width: none;          /* removes the cap */
+  margin: 0;                /* removes centering gap */
+  padding: 0;               /* lets it reach the container edges */
+}
+    }
+
+    h1{
+      margin: 0 0 8px;
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing: -0.02em;
+      color: var(--brandBlue);
+    }
+    .sub{
+      margin: 0;
+      color: var(--muted);
+      max-width: 85ch;
+      font-size: 16px;
+    }
+
+    .notice{
+      margin-top: 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #374151;
+    }
+    .notice b{ font-weight: 650; }
+    .notice .pii{
+      display:inline-block;
+      padding: 0 6px;
+      border-radius: 7px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      font-weight: 650;
+    }
+
+    .tool-list{
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .tool{
+      xbackground: var(--card);
+background: #f1f3f5;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: clip;
+
+      /* Hover / focus lift effect */
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      will-change: transform;
+    }
+    .tool::before{
+      content:"";
+      display:block;
+      height: 6px;
+      background: var(--accentGradient);
+    }
+
+    .tool:hover,
+    .tool:focus-within{
+      transform: translateY(-3px);
+      box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 18px 40px rgba(0,0,0,.10);
+      border-color: #cbd5e1;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .tool{ transition: none; }
+      .tool:hover,
+      .tool:focus-within{ transform: none; }
+    }
+
+    .toolTop{
+      padding: 24px 14px; /* top/bottom, left/right */
+    }
+
+    .row{
+      display: grid;
+      grid-template-columns: 84px 1fr auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .logoBox{
+      width: 84px;
+      height: 84px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .logoBox img{
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      display:block;
+    }
+
+    .title{
+      display:flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .title h2{
+      margin:0;
+      font-size: 22px;
+      color: #1d4ed8; /* link-blue vibe */
+      letter-spacing: -0.01em;
+    }
+
+    .desc{
+      margin: 0 0 10px;
+      color: #374151;
+      font-size: 16px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .chipToggle{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+
+      font-size: 12.5px;
+      color: #374151;
+      xbackground: var(--chipBg);
+background: white;
+      border: 1px solid var(--chipBorder);
+      border-radius: 999px;
+      padding: 6px 10px;
+      user-select: none;
+    }
+    .chipToggle:hover{ border-color: #cbd5e1; }
+    .chipToggle[aria-expanded="true"]{
+      border-color: #94a3b8;
+      background: #eaeef3;
+    }
+
+    .chipToggle .tri{
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1;
+      transition: transform .15s ease;
+      display:inline-block;
+      transform: rotate(0deg);
+    }
+    .chipToggle[aria-expanded="true"] .tri{
+      transform: rotate(90deg);
+    }
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      align-items: center;
+      padding-top: 2px;
+ /* ADD THESE */
+  flex-wrap: nowrap;
+  white-space: nowrap;
+    }
+    .btn{
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #111827;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:hover{ border-color:#cbd5e1; }
+
+.btnGuidance{
+  background: #e6f0fb;
+  border-color: #c7dbf5;   /* slightly darker border so it doesn’t disappear */
+  color: #0f2a44;          /* readable dark text */
+}
+
+.btnGuidance:hover{
+  background: #d9e8fa;     /* subtle hover */
+  border-color: #b7cff1;
+}
+
+ .last-updated-wrapper {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 14px;
+  }
+
+  .last-updated {
+    display: inline-block;
+    background-color: #e6f0fa;
+    color: #2c3e50;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Poppins', system-ui, -apple-system,
+                 BlinkMacSystemFont, "Segoe UI",
+                 Roboto, Helvetica, Arial, sans-serif;
+  }
+
+    .detailsBody{
+      border-top: 1px solid var(--border);
+      padding: 14px;
+      background: #ffffff;
+      display: none;
+    }
+    .detailsBody.open{ display: block; }
+
+    .panel{
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+   
+    .panel h3{
+      margin: 0 0 8px;
+      font-size: 13px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: #111827;
+    }
+    .panel p, .panel ul{
+      margin: 0;
+      color: #374151;
+      font-size: 13.5px;
+    }
+    .panel ul{ padding-left: 18px; }
+    .panel li{ margin: 4px 0; }
+
+    .panelSection{ display: none; }
+    .panelSection.active{ display: block; }
+
+    @media (max-width: 900px){
+      .row{ grid-template-columns: 84px 1fr; }
+      .actions{ display:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header>
+      <h1></h1>
+      <p class="sub"></p>
+<div class="last-updated-wrapper">
+  <div class="last-updated">Last Updated: January 12, 2026</div>
+</div>
+      <div class="notice">
+        <b>Reminder:</b> Do not enter student personal information <span class="pii">(PII)</span> into non-approved tools.
+        Follow school and district guidance for all AI use.Also, all outputs must be evaluated for Clarity, Accuracy, Relevance, and Ethics. We encourage extreme caution if using these platforms for grading, class material generation, or any other student-facing materials.
+      </div>
+    </header>
+
+    <section class="tool-list">
+
+      <!-- 1) ChatGPT (UPDATED logo URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/04e41b96-e940-464d-9b24-5b19ab2b60ca" alt="ChatGPT logo">
+            </div>
+            <div>
+              <div class="title"><h2>ChatGPT</h2></div>
+              <p class="desc">OpenAI’s chatbot most famous for starting the generative AI boom.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn btnGuidance" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/chatgpt" target="_blank" rel="noreferrer">Guidance</a><a class="btn" href="https://chatgpt.com" target="_blank" rel="noreferrer">Open tool</a></div>
+          
+
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>OpenAI’s chatbot most famous for starting the generative AI boom.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> Google SSO</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Brainstorm ideas, spark creativity, accelerate productivity, and many more.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2) Google Gemini (UPDATED logo URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/374699b1-79be-4531-8d61-a6fe1b84b5ef" alt="Google Gemini logo">
+            </div>
+            <div>
+              <div class="title"><h2>Google Gemini</h2></div>
+              <p class="desc">Google’s generative AI model integrated into Google Workspace.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn btnGuidance" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/google-gemini/" target="_blank" rel="noreferrer">Guidance</a><a class="btn" href="https://gemini.google.com/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Google’s generative AI model integrated into Google Workspace.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> District Google account</li><li><b>Student:</b> District student Google account (if enabled)</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Drafting, summarizing, and assistance inside Workspace workflows.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3) NotebookLM (UPDATED logo URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/4df2b47b-9e20-4b2f-8e4e-312ebc2a1806" alt="NotebookLM logo">
+            </div>
+            <div>
+              <div class="title"><h2>NotebookLM</h2></div>
+              <p class="desc">AI-powered research and writing assistant that analyzes your sources and generates insights.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn btnGuidance" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/notebook-lm" target="_blank" rel="noreferrer">Guidance</a><a class="btn" href="https://notebooklm.google.com/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>AI-powered research and writing assistant that analyzes your sources and generates insights.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> District Google account</li><li><b>Student:</b> District student Google account (if enabled)</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Attach trusted sources, then generate summaries, notes, and writing support from those sources.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4) Canva (UPDATED logo URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/5c5ee997-4099-43fc-adf0-fc27c1ea3ec1" alt="Canva logo">
+            </div>
+            <div>
+              <div class="title"><h2>Canva</h2></div>
+              <p class="desc">AI-powered creative suite inside Canva for writing, designing, and editing.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn btnGuidance" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/canva-ai" target="_blank" rel="noreferrer">Guidance</a><a class="btn" href="https://www.canva.com/login/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>“Canva Magic”: Canva’s embedded generative AI system.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> Clever</li><li><b>Student:</b> Clever</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Slides, posters, social posts, and AI-assisted writing/design.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Claude (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/fdb5535b-ade5-4531-ae4d-bba2bcb4ffc3" alt="Claude logo">
+            </div>
+            <div>
+              <div class="title"><h2>Claude</h2></div>
+              <p class="desc">Anthropic’s chatbot which functions similar to ChatGPT. Free version allows uploading limited amounts of PDFs.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://claude.ai/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Chatbot similar to ChatGPT; free version supports limited PDF uploads.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Brainstorm and summarize long documents.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Class Companion (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b99390d4-506c-4d01-aeb6-b004ef065929" alt="Class Companion logo">
+            </div>
+            <div>
+              <div class="title"><h2>Class Companion</h2></div>
+              <p class="desc">Give students instant feedback and coaching on writing samples.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://app.classcompanion.com/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Instant feedback and coaching on writing samples.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Formative assessment on writing based on a rubric; allow multiple attempts.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>Humanities</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Curipod (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/71416655-4819-4e7e-8d09-d4e820625fd9" alt="Curipod logo">
+            </div>
+            <div>
+              <div class="title"><h2>Curipod</h2></div>
+              <p class="desc">Generative AI platform that creates full lessons from prompts, similar to Pear Deck.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://curipod.com/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Create full lessons from prompts.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Interactive lessons and peer feedback.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Diffit (UPDATED using “Drift” URL from your Image Links PDF) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c85c4fa2-e3e6-43b1-aee6-0b5df7b99593" alt="Diffit logo">
+            </div>
+            <div>
+              <div class="title"><h2>Diffit</h2></div>
+              <p class="desc">Create instructional materials, saving tons of time and helping all students access grade-level content.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://app.diffit.me/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Create instructional materials quickly and support access to grade-level content.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> No access</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Re-level, translate, add images, and more; integrates with Docs/Slides/Classroom.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Eduaide (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/6c4cfa49-2085-473c-8cc9-4b932b0ee789" alt="Eduaide logo">
+            </div>
+            <div>
+              <div class="title"><h2>Eduaide</h2></div>
+              <p class="desc">Teacher assistant similar to MagicSchool.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://www.eduaide.ai/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Teacher assistant similar to MagicSchool.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> No access</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Lesson planning, activity ideas, feedback, email assistance, and more.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Firefly (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/ad118660-8960-47d1-940b-1e78d89a1c02" alt="Firefly (Adobe) logo">
+            </div>
+            <div>
+              <div class="title"><h2>Firefly (Adobe)</h2></div>
+              <p class="desc">Use generative AI and simple text prompts to create images, text effects, and more.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://firefly.adobe.com/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Generate images, text effects, and palettes; create content from reference images.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> Free access (no sign-in required)</li><li><b>Student:</b> Free access (no sign-in required)</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Creating images and visual representations of ideas.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects; Graphic Design; Film &amp; TV; Digital Photo</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Gamma (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b505f600-6805-46ff-a35c-df925d5b6cbb" alt="Gamma logo">
+            </div>
+            <div>
+              <div class="title"><h2>Gamma</h2></div>
+              <p class="desc">Create presentations, websites, and documents instantly.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://gamma.app/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Create presentations, websites, and documents instantly.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> No access</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Slides, websites, and documents.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Khanmigo (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/95194749-2ef4-4ae8-a7b7-e4ba8fac486b" alt="Khanmigo logo">
+            </div>
+            <div>
+              <div class="title"><h2>Khanmigo</h2></div>
+              <p class="desc">Curricular resources and a safe, secure chatbot for students.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://www.khanacademy.org/khanmigo" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Curricular resources and a safe, secure chatbot for students.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> Clever</li><li><b>Student:</b> Clever</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Lesson planning, intervention, and student tutoring.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>Most core subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- MagicSchool (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/cd2215ab-6e6a-4ee7-9584-2dcb31d7194d" alt="MagicSchool logo">
+            </div>
+            <div>
+              <div class="title"><h2>MagicSchool</h2></div>
+              <p class="desc">Teacher assistant. January will switch free version to much more limited access.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://www.magicschool.ai/login" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Teacher assistant with many classroom workflows.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Lesson planning, activity ideas, student feedback, email assistance, and more.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Perplexity (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c4631eff-a8c9-4e88-93f4-daacbc14ca05" alt="Perplexity logo">
+            </div>
+            <div>
+              <div class="title"><h2>Perplexity</h2></div>
+              <p class="desc">Chatbot that provides trusted, accurate, real-time answers with sources.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://www.perplexity.ai/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Trusted, accurate, real-time answers with sources.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> School Gmail</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Research and idea generation.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ScribeHow (UPDATED URL) -->
+      <article class="tool" data-tool>
+        <div class="toolTop">
+          <div class="row">
+            <div class="logoBox">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c764011d-3d7f-49d3-94ac-a3114c01074b" alt="ScribeHow logo">
+            </div>
+            <div>
+              <div class="title"><h2>ScribeHow</h2></div>
+              <p class="desc">Chrome extension that captures your screen and generates a how-to based on your clicks and keystrokes.</p>
+              <div class="chips">
+                <button class="chipToggle" type="button" data-section="purpose" aria-expanded="false"><span class="tri">▶</span> Purpose</button>
+                <button class="chipToggle" type="button" data-section="access" aria-expanded="false"><span class="tri">▶</span> Access</button>
+                <button class="chipToggle" type="button" data-section="implementation" aria-expanded="false"><span class="tri">▶</span> Implementation</button>
+                <button class="chipToggle" type="button" data-section="relevant" aria-expanded="false"><span class="tri">▶</span> Relevant Content</button>
+              </div>
+            </div>
+            <div class="actions"><a class="btn" href="https://scribehow.com/" target="_blank" rel="noreferrer">Open tool</a></div>
+          </div>
+        </div>
+        <div class="detailsBody" data-details>
+          <div class="panel">
+            <div class="panelSection" data-panel="purpose"><h3>Purpose</h3><p>Create step-by-step how-to guides from your on-screen actions.</p></div>
+            <div class="panelSection" data-panel="access"><h3>Access</h3><ul><li><b>Teacher:</b> School Gmail</li><li><b>Student:</b> No access</li></ul></div>
+            <div class="panelSection" data-panel="implementation"><h3>Implementation</h3><ul><li>Create how-to guides to access digital platforms.</li></ul></div>
+            <div class="panelSection" data-panel="relevant"><h3>Relevant Content</h3><ul><li>All subjects</li></ul></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    // Clicking a pill toggles the detail area for that tool card.
+    // Only one section shows at a time.
+    // Clicking the same open pill closes it.
+    document.querySelectorAll('[data-tool]').forEach((toolCard) => {
+      const details = toolCard.querySelector('[data-details]');
+      const toggles = Array.from(toolCard.querySelectorAll('.chipToggle'));
+      const panels = Array.from(toolCard.querySelectorAll('[data-panel]'));
+
+      function closeAll() {
+        toggles.forEach(t => t.setAttribute('aria-expanded', 'false'));
+        panels.forEach(p => p.classList.remove('active'));
+        details.classList.remove('open');
+      }
+
+      toggles.forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+          const section = toggle.getAttribute('data-section');
+          const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+          if (isOpen) {
+            closeAll();
+            return;
+          }
+
+          toggles.forEach(t => t.setAttribute('aria-expanded', 'false'));
+          toggle.setAttribute('aria-expanded', 'true');
+
+          panels.forEach(p => p.classList.remove('active'));
+          const target = toolCard.querySelector(`[data-panel="${section}"]`);
+          if (target) target.classList.add('active');
+
+          details.classList.add('open');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
