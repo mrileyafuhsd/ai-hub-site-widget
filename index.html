@@ -206,13 +206,15 @@
             <span class="card-link">Learn more <span class="arrow">→</span></span>
           </div>
         </a>
-   <a class="card" href="https://www.canva.com/magic-write/">
+
+        <a class="card" href="https://www.canva.com/magic-write/">
           <div class="card-body">
             <h3 class="card-title">Magic Write</h3>
             <p class="card-desc">Generate first-draft content in seconds by starting with a prompt and letting AI produce copy, outlines, lists, captions, and ideas.</p>
             <span class="card-link">Learn more <span class="arrow">→</span></span>
           </div>
         </a>
+
         <!-- ✅ NON-FEATURED: no images -->
         <a class="card" href="https://www.canva.com/pro/magic-resize/">
           <div class="card-body">
@@ -237,6 +239,7 @@
             <span class="card-link">Learn more <span class="arrow">→</span></span>
           </div>
         </a>
+
         <a class="card" href="#">
           <div class="card-body">
             <h3 class="card-title">Magic Formula Generator</h3>
@@ -263,21 +266,38 @@
       const rightGrid = document.getElementById("rightGrid");
       const layout = document.getElementById("layout");
 
+      // 1) Move cards into layout (your original logic)
       const cards = Array.from(source.querySelectorAll(".card"));
       const featured = cards.find(c => c.dataset.featured === "true");
       const nonFeatured = cards.filter(c => c !== featured);
 
-      // Place featured (if any)
       if (featured) {
         featuredSlot.appendChild(featured);
       } else {
-        // If no featured card, collapse to a simple grid
         featuredSlot.classList.add("hidden");
         layout.style.gridTemplateColumns = "1fr";
       }
 
-      // Cap non-featured to 6 (2 cols x 3 rows on desktop)
       nonFeatured.slice(0, 6).forEach(card => rightGrid.appendChild(card));
+
+      // 2) Make ALL links break out of the iframe and navigate the parent page (same tab)
+      //    _top is the most reliable option for embedded iframes.
+      const forceTopNavigation = (root = document) => {
+        root.querySelectorAll('a[href]').forEach(a => {
+          const href = (a.getAttribute('href') || '').trim();
+
+          // Skip placeholders and in-page anchors
+          if (!href || href === '#' || href.startsWith('#')) return;
+
+          // Force navigation in the top-level browsing context
+          a.setAttribute('target', '_top');
+
+          // Security best practice (harmless even when not opening new tabs)
+          a.setAttribute('rel', 'noopener noreferrer');
+        });
+      };
+
+      forceTopNavigation(document);
     })();
   </script>
 </body>
