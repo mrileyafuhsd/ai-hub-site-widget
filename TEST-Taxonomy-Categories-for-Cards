@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Tools Cards</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #f6f7f9;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+      font-size: 1.6rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .tags {
+      margin-top: auto;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #e3e6eb;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>AI Resource Cards</h1>
+
+  <div class="grid">
+
+    <div class="card" data-category="chatgpt">
+      <h3>ChatGPT Prompt Starter Kit</h3>
+      <p>Ready-to-use prompts for lesson planning, emails, and summaries.</p>
+      <div class="tags">
+        <span class="tag">ChatGPT</span>
+      </div>
+    </div>
+
+    <div class="card" data-category="gemini">
+      <h3>Gemini Drive Helper</h3>
+      <p>Uses Google Docs and Sheets to answer questions from district files.</p>
+      <div class="tags">
+        <span class="tag">Gemini</span>
+      </div>
+    </div>
+
+    <div class="card" data-category="chatgpt gemini">
+      <h3>AI Safety & Ethics Basics</h3>
+      <p>Guidelines for responsible AI use with staff and students.</p>
+      <div class="tags">
+        <span class="tag">ChatGPT</span>
+        <span class="tag">Gemini</span>
+      </div>
+    </div>
+
+    <div class="card" data-category="chatgpt">
+      <h3>Custom GPT Examples</h3>
+      <p>Examples of district-built GPTs for FAQs, policies, and support.</p>
+      <div class="tags">
+        <span class="tag">ChatGPT</span>
+      </div>
+    </div>
+
+    <div class="card" data-category="gemini">
+      <h3>Gemini Classroom Ideas</h3>
+      <p>Ideas for using Gemini with Slides, Docs, and real-time collaboration.</p>
+      <div class="tags">
+        <span class="tag">Gemini</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const category = (params.get("category") || "").toLowerCase();
+
+    if (category) {
+      document.querySelectorAll(".card").forEach(card => {
+        const categories = (card.dataset.category || "")
+          .toLowerCase()
+          .split(/\s+/);
+
+        if (!categories.includes(category)) {
+          card.style.display = "none";
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
