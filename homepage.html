@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        padding: 0.75rem 1rem;
+        margin: 0;
+        background-color: transparent;
+        color: #002c65;
+        overflow: hidden;
+      }
+
+      /* =====================
+         CARD GRID
+      ====================== */
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        width: 100%;
+        margin: 0 0 1.75rem 0;
+      }
+
+      @media (max-width: 900px) {
+        .card-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 500px) {
+        .card-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* =====================
+         CARD (shared style)
+      ====================== */
+      .card {
+        background-color: #f0f3f8;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.06),
+          0 1px 2px rgba(0, 0, 0, 0.04);
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-height: 260px;
+        transition: box-shadow 0.25s ease, transform 0.25s ease;
+      }
+
+      .card:hover {
+        box-shadow:
+          0 8px 24px rgba(0, 0, 0, 0.08),
+          0 2px 4px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+      }
+
+      .card-img {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 0.75rem;
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.4rem 0;
+        font-weight: 700;
+      }
+
+      .card p {
+        font-size: 0.95rem;
+        margin: 0 0 1rem 0;
+        line-height: 1.4;
+      }
+
+      .button-group {
+        margin-top: auto;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Base button style (used everywhere) */
+      .card-btn {
+        display: block;
+        width: calc(100% - 2rem);
+        margin: 0 auto;
+        padding: 0.55rem 0.75rem;
+        background: #ffffff;
+        color: #002c65;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 6px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        white-space: nowrap;
+      }
+
+      .card-btn:hover {
+        background: #10b4f8;
+        color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Fit-to-text version (same padding, just not full width) */
+      .card-btn--fit {
+        width: auto;
+        display: inline-block;
+      }
+
+      /* =====================
+         MARQUEE "CARD" WRAPPER
+      ====================== */
+      .marquee-card {
+        background-color: #f0f3f8;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.06),
+          0 1px 2px rgba(0, 0, 0, 0.04);
+        padding: 0.75rem 0.5rem 1rem;
+        overflow: hidden;
+      }
+
+      .marquee-button-wrap {
+        margin-top: 0rem;
+        text-align: center;
+      }
+
+      /* =====================
+         ICON MARQUEE
+      ====================== */
+      .ai-icon-marquee {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 12px 0;
+      }
+
+      .ai-icon-marquee .fade {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 60px;
+        z-index: 3;
+        pointer-events: none;
+      }
+
+      .ai-icon-marquee .fade-left {
+        left: 0;
+        background: linear-gradient(to right, #f0f3f8, rgba(240, 243, 248, 0));
+      }
+
+      .ai-icon-marquee .fade-right {
+        right: 0;
+        background: linear-gradient(to left, #f0f3f8, rgba(240, 243, 248, 0));
+      }
+
+      .ai-icon-track {
+        display: flex;
+        gap: 22px;
+        width: max-content;
+        align-items: flex-start;
+        will-change: transform;
+        animation: ai-icon-scroll 55s linear infinite;
+        padding: 6px 8px;
+      }
+
+      .ai-icon-marquee:hover .ai-icon-track {
+        animation-play-state: paused;
+      }
+
+      .ai-icon-tile {
+        width: 112px;
+        text-decoration: none;
+        font-family: 'Montserrat', sans-serif;
+        color: #002c65;
+        display: grid;
+        justify-items: center;
+        gap: 8px;
+        transform: translateZ(0);
+      }
+
+      .ai-icon-box {
+        width: 96px;
+        height: 96px;
+        border-radius: 26px;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      }
+
+      .ai-icon-box img {
+        width: 62%;
+        height: 62%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .ai-icon-label {
+        font-size: 15px;
+        font-weight: 700;
+        color: #002c65;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.18s ease, transform 0.18s ease;
+        white-space: nowrap;
+      }
+
+      .ai-icon-tile:hover .ai-icon-box,
+      .ai-icon-tile:focus-visible .ai-icon-box {
+        transform: scale(1.08);
+        border-color: rgba(0, 0, 0, 0.18);
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.10);
+      }
+
+      .ai-icon-tile:hover .ai-icon-label,
+      .ai-icon-tile:focus-visible .ai-icon-label {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @keyframes ai-icon-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      @media (max-width: 520px) {
+        .ai-icon-tile { width: 96px; }
+        .ai-icon-box { width: 82px; height: 82px; border-radius: 22px; }
+        .ai-icon-label { font-size: 14px; }
+        .ai-icon-marquee .fade { width: 44px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card-grid">
+      <div class="card">
+        <img class="card-img" src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/3ba02f2f-9741-4aa7-8b15-7f7e211d4bb7" />
+        <h3>ChatGPT</h3>
+        <p>AI-driven conversational assistant for writing, planning, problem-solving, and content creation.</p>
+        <div class="button-group">
+          <a href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/chatgpt" class="card-btn">Get Started</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="card-img" src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/72079f7a-f698-4eac-a3c5-11bfec18d805" />
+        <h3>Google Gemini</h3>
+        <p>Google's generative AI model integrated into Google Workspace.</p>
+        <div class="button-group">
+          <a href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/google-gemini" class="card-btn">Get Started</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="card-img" src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/98294086-0cee-48a3-9e04-da5486f6b065" />
+        <h3>NotebookLM</h3>
+        <p>AI-powered research and writing assistant that analyzes your sources and generates insights.</p>
+        <div class="button-group">
+          <a href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/notebook-lm" class="card-btn">Get Started</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img class="card-img" src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/1f43c44b-3d76-4944-8969-bea6cc6341a0" />
+        <h3>Canva Magic Studio</h3>
+        <p>AI-powered creative suite inside Canva for writing, designing, and editing.</p>
+        <div class="button-group">
+          <a href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/canva-ai" class="card-btn">Get Started</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-card">
+      <div class="ai-icon-marquee">
+        <div class="fade fade-left"></div>
+        <div class="fade fade-right"></div>
+
+        <div class="ai-icon-track">
+          <!-- Set A -->
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Claude">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/fdb5535b-ade5-4531-ae4d-bba2bcb4ffc3" alt="Claude">
+            </div>
+            <div class="ai-icon-label">Claude</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Curipod">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/71416655-4819-4e7e-8d09-d4e820625fd9" alt="Curipod">
+            </div>
+            <div class="ai-icon-label">Curipod</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Diffit">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c85c4fa2-e3e6-43b1-aee6-0b5df7b99593" alt="Diffit">
+            </div>
+            <div class="ai-icon-label">Diffit</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Eduaide">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/6c4cfa49-2085-473c-8cc9-4b932b0ee789" alt="Eduaide">
+            </div>
+            <div class="ai-icon-label">Eduaide</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Class Companion">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b99390d4-506c-4d01-aeb6-b004ef065929" alt="Class Companion">
+            </div>
+            <div class="ai-icon-label">Class Companion</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Adobe Firefly">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/ad118660-8960-47d1-940b-1e78d89a1c02" alt="Adobe Firefly">
+            </div>
+            <div class="ai-icon-label">Adobe Firefly</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Gamma">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b505f600-6805-46ff-a35c-df925d5b6cbb" alt="Gamma">
+            </div>
+            <div class="ai-icon-label">Gamma</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Scribe">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c764011d-3d7f-49d3-94ac-a3114c01074b" alt="Scribe">
+            </div>
+            <div class="ai-icon-label">Scribe</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Perplexity">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c4631eff-a8c9-4e88-93f4-daacbc14ca05" alt="Perplexity">
+            </div>
+            <div class="ai-icon-label">Perplexity</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Khanmigo">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/95194749-2ef4-4ae8-a7b7-e4ba8fac486b" alt="Khanmigo">
+            </div>
+            <div class="ai-icon-label">Khanmigo</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Magic School">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/cd2215ab-6e6a-4ee7-9584-2dcb31d7194d" alt="Magic School">
+            </div>
+            <div class="ai-icon-label">Magic School</div>
+          </a>
+
+          <!-- Duplicate Set A -->
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Claude (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/fdb5535b-ade5-4531-ae4d-bba2bcb4ffc3" alt="Claude">
+            </div>
+            <div class="ai-icon-label">Claude</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Curipod (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/71416655-4819-4e7e-8d09-d4e820625fd9" alt="Curipod">
+            </div>
+            <div class="ai-icon-label">Curipod</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Diffit (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c85c4fa2-e3e6-43b1-aee6-0b5df7b99593" alt="Diffit">
+            </div>
+            <div class="ai-icon-label">Diffit</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Eduaide (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/6c4cfa49-2085-473c-8cc9-4b932b0ee789" alt="Eduaide">
+            </div>
+            <div class="ai-icon-label">Eduaide</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Class Companion (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b99390d4-506c-4d01-aeb6-b004ef065929" alt="Class Companion">
+            </div>
+            <div class="ai-icon-label">Class Companion</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Adobe Firefly (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/ad118660-8960-47d1-940b-1e78d89a1c02" alt="Adobe Firefly">
+            </div>
+            <div class="ai-icon-label">Adobe Firefly</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Gamma (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b505f600-6805-46ff-a35c-df925d5b6cbb" alt="Gamma">
+            </div>
+            <div class="ai-icon-label">Gamma</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Scribe (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/b505f600-6805-46ff-a35c-df925d5b6cbb" alt="Scribe">
+            </div>
+            <div class="ai-icon-label">Scribe</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Perplexity (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/c4631eff-a8c9-4e88-93f4-daacbc14ca05" alt="Perplexity">
+            </div>
+            <div class="ai-icon-label">Perplexity</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Khanmigo (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/95194749-2ef4-4ae8-a7b7-e4ba8fac486b" alt="Khanmigo">
+            </div>
+            <div class="ai-icon-label">Khanmigo</div>
+          </a>
+
+          <a class="ai-icon-tile" href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/" aria-label="Magic School (loop)">
+            <div class="ai-icon-box">
+              <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/cd2215ab-6e6a-4ee7-9584-2dcb31d7194d" alt="Magic School">
+            </div>
+            <div class="ai-icon-label">Magic School</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="marquee-button-wrap">
+        <a
+          href="https://sites.google.com/aguafria.org/ai-hub/ai-tools/"
+          class="card-btn card-btn--fit"
+        >
+          View All Approved Tools
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
