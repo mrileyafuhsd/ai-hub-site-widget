@@ -1,192 +1,490 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Free Garden Guide</title>
+  <meta charset="utf-8" />
+  <title>AFUHSD Resource Widget (Filter Edition)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+  <!-- ✅ ADDED: Poppins Google Font (only change needed for title font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,700&display=swap" rel="stylesheet">
 
-  /* Overlay */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-
-  /* Modal */
-  .modal {
-    width: 900px;
-    max-width: 95%;
-    background: #fff;
-    display: flex;
-    position: relative;
-  }
-
-  /* Left panel */
-  .left {
-    background: #f7e7b8;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .left img {
-    max-width: 260px;
-    box-shadow: 0 6px 16px rgba(0,0,0,.25);
-    border: 6px solid #fff;
-  }
-
-  /* Right panel */
-  .right {
-    padding: 36px 40px;
-    width: 420px;
-    box-sizing: border-box;
-  }
-
-  .close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 26px;
-    cursor: pointer;
-  }
-
-  h1 {
-    font-family: Georgia, "Times New Roman", serif;
-    color: #b32a1c;
-    font-size: 46px;
-    margin: 0 0 6px;
-  }
-
-  h2 {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 28px;
-    margin: 0 0 16px;
-    font-weight: normal;
-  }
-
-  .fine-print {
-    font-size: 11px;
-    color: #666;
-    line-height: 1.4;
-    margin-bottom: 16px;
-  }
-
-  input {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    border: 2px solid #cfcfcf;
-    border-radius: 4px;
-    margin-bottom: 14px;
-    box-sizing: border-box;
-  }
-
-  button {
-    width: 100%;
-    background: #b32a1c;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .no-thanks {
-    text-align: center;
-    margin-top: 14px;
-    font-size: 13px;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  /* Mobile */
-  @media (max-width: 720px) {
-    .modal {
-      flex-direction: column;
+  <style>
+    /* =========================================
+       1. CSS VARIABLES
+       ========================================= */
+    :root{
+      --card-gap: 16px;
+      --radius: 16px;
+      --text: #111827;
+      --muted: #6b7280;
+      --link: #2563eb;
+      --btn-gray: #e5e7eb;
+      --btn-gray-hover: #d1d5db;
+      --active-blue: #2563eb; /* Color for active filter */
+      --shadow: 0 4px 12px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     }
-    .right {
+
+    html, body {
+      margin: 0; padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: transparent;
+      color: var(--text);
+
+      /* ✅ FIX: Prevent the embed from clipping content */
+      overflow: auto;
+    }
+
+    .carousel-wrap {
       width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
     }
-  }
-</style>
-</head>
 
+    /* =========================================
+       2. HEADER & FILTER BAR
+       ========================================= */
+    .header-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .carousel-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar-title {
+      margin: 0;
+      font-family: "Poppins", system-ui, -apple-system, sans-serif;
+      font-size: 18pt;
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    /* FILTER NAVIGATION */
+    .filter-nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .filter-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 16px;
+      border-radius: 999px; /* Pill shape */
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    }
+    .filter-btn:hover { 
+      background: #eef2f7; 
+      color: var(--text);
+    }
+    
+    /* Active State for Filter Button */
+    .filter-btn.active {
+      background: #eef2f7;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(17,24,39,0.08);
+    }
+
+    /* CONTROLS (Arrows / View All) */
+    .controls-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-btn {
+      border: 0;
+      background: var(--btn-gray);
+      color: var(--text);
+      height: 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      text-decoration: none; 
+    }
+    .control-btn:hover { background: var(--btn-gray-hover); }
+
+    .nav-btn { width: 40px; font-size: 1.2rem; }
+    .view-all-btn { padding: 0 16px; font-size: 0.9rem; box-sizing: border-box; }
+
+    /* =========================================
+       3. CAROUSEL TRACK
+       ========================================= */
+    .carousel {
+      display: grid;
+      gap: var(--card-gap);
+      padding-bottom: 20px;
+      
+      /* Default Mode */
+      grid-auto-flow: column;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory; 
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+    .carousel::-webkit-scrollbar { display: none; }
+
+    /* Responsive */
+    @media(min-width: 900px) {
+      .carousel { grid-auto-columns: calc((100% - (2 * var(--card-gap))) / 3); }
+    }
+    @media(max-width: 899px) and (min-width: 640px) {
+      .carousel { grid-auto-columns: calc((100% - var(--card-gap)) / 2); }
+    }
+    @media(max-width: 639px) {
+      .carousel { grid-auto-columns: 85%; }
+    }
+
+    /* GRID MODE */
+    .carousel.is-grid {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, 1fr);
+      overflow-x: visible;
+      padding-bottom: 0;
+    }
+    @media(max-width: 899px) { .carousel.is-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 500px) { .carousel.is-grid { grid-template-columns: 1fr; } }
+
+
+    /* =========================================
+       4. CARDS
+       ========================================= */
+    .card {
+      scroll-snap-align: start;
+      background: #f0f3f8;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      /* ✅ FIX: Was height: 320px (caused Learn more to be cut off) */
+      height: auto;
+      min-height: 320px;
+    }
+    /* Hidden state for filtering */
+    .card.hidden {
+      display: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    /* ✅ FIX: 16:9 media area (replaces old fixed height: 140px) */
+    .card-media {
+      background: #f3f4f6;
+      position: relative;
+      flex-shrink: 0;
+      width: 100%;
+      height: 0;
+      padding-top: 56.25%; /* 16:9 */
+      overflow: hidden;
+    }
+    .card-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute; top: 10px; left: 10px;
+      background: #111827; color: #fff;
+      padding: 4px 10px; font-size: 0.75rem; font-weight: 700;
+      border-radius: 99px;
+      z-index: 2;
+    }
+    .badge[data-tool="chatgpt"] { background: #14b8a6; }
+    .badge[data-tool="canva"]   { background: #7c3aed; }
+    .badge[data-tool="word"]    { background: #2563eb; }
+    .badge[data-tool="forms"]   { background: #16a34a; }
+    .badge[data-tool="notebooklm"] { background: #000; }
+
+    .card-body { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+    .card-title { margin: 0 0 8px; font-size: 1.5rem; font-weight: 600; }
+    .card-desc { margin: 0 0 16px; font-size: 1rem; color: var(--muted); line-height: 1.4; flex-grow: 1; }
+
+    .card-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 1.3rem; font-weight: 600; color: var(--link);
+      text-decoration: none;
+      margin-top: auto;
+      padding: 5px 0;
+    }
+    .card-link:hover .arrow { transform: translateX(4px); transition: transform 0.2s; }
+
+  </style>
+</head>
 <body>
 
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="close" id="closeBtn">✕</div>
-
-    <div class="left">
-      <!-- Replace with your real cover image -->
-      <img src="https://images.unsplash.com/photo-1492496913980-501348b61469?q=80&w=800&auto=format&fit=crop"
-           alt="How to Start a Garden">
-    </div>
-
-    <div class="right">
-      <h1>Free Guide</h1>
-      <h2>How to Start<br>A Vegetable Garden</h2>
-
-      <div class="fine-print">
-        You'll also subscribe to our Daily Newsletter & Partner Emails.
-        Msg & data rates may apply. See Terms & Privacy Policy.
+  <section class="carousel-wrap">
+    
+    <div class="header-stack">
+      <div class="carousel-topbar">
+        <h2 class="topbar-title">Resources</h2>
+        
+        <div class="controls-group" id="controlsGroup">
+          <a id="viewAllBtn" class="control-btn view-all-btn" target="_blank" rel="noopener">View All</a>
+          <button id="prevBtn" class="control-btn nav-btn">&lt;</button>
+          <button id="nextBtn" class="control-btn nav-btn">&gt;</button>
+        </div>
       </div>
 
-      <input type="email" id="email" placeholder="email@address.com (required)">
-
-      <button id="submitBtn">GET YOUR FREE GUIDE</button>
-
-      <div class="no-thanks" id="noThanks">No, thanks</div>
+      <div class="filter-nav" id="filterNav">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="chatgpt">ChatGPT</button>
+        <button class="filter-btn" data-filter="canva">Canva</button>
+        <button class="filter-btn" data-filter="word">Word</button>
+        <button class="filter-btn" data-filter="notebooklm">NotebookLM</button>
+        <button class="filter-btn" data-filter="forms">Forms</button>
+      </div>
     </div>
-  </div>
-</div>
 
-<script>
-  const overlay = document.getElementById('overlay');
-  const closeBtn = document.getElementById('closeBtn');
-  const noThanks = document.getElementById('noThanks');
-  const submitBtn = document.getElementById('submitBtn');
+    <div class="carousel" id="carousel">
 
-  function openModal() {
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/8761002a-d775-484e-9345-2339c0680756" alt="">
+          <span class="badge" data-tool="chatgpt">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Apps for ChatGPT</h3>
+          <p class="card-desc">Dictation and Voice Mode let you have a real conversation with ChatGPT— you talk, it talks back, and ideas flow naturally.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/apps-for-chatgpt" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
+      
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/5196c0cc-b72b-4b91-ad90-7a7749f3fe64" alt="">
+          <span class="badge" data-tool="chatgpt">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Organizational Knowledge</h3>
+          <p class="card-desc">Company Knowledge allows ChatGPT to link directly with your existing tools like Gmail, Google Calendar, and even Google Drive.
 
-  function closeModal() {
-    overlay.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/organizational-knowledge_1" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
 
-  // Show popup after delay
-  setTimeout(openModal, 2000);
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/309140ca-4868-428b-bde5-a97243327c98" alt="">
+          <span class="badge" data-tool="chatgpt">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Deep Research</h3>
+          <p class="card-desc">Dictation and Voice Mode let you have a real conversation with ChatGPT— you talk, it talks back, and ideas flow naturally.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/deep-research" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
 
-  closeBtn.onclick = closeModal;
-  noThanks.onclick = closeModal;
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/a7c4c34b-f4a3-4779-88bf-c098ddafda07" alt="">
+          <span class="badge" data-tool="chatgpt">Chatgpt</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Advanced Voice Mode</h3>
+          <p class="card-desc">Dictation and Voice Mode lets you have a real conversation with ChatGPT — you talk, it talks back, and ideas flow naturally in both directions.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/advanced-voice-mode" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
 
-  submitBtn.onclick = () => {
-    const email = document.getElementById('email').value.trim();
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address.');
-      return;
-    }
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/a8efae71-bfa6-4340-a6d3-e38ca55e28d6" alt="">
+          <span class="badge" data-tool="chatgpt">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Project Folders</h3>
+          <p class="card-desc">Projects let you group all your related chats, files, and notes into one organized workspace on the left sidebar.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/project-folders" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
 
-    // Replace with real form submission
-    alert('Thanks! (Demo only)');
-    closeModal();
-  };
-</script>
+      <div class="card" data-tool="chatgpt">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/96316c9f-b673-4f78-8f7e-7109f40fb789" alt="">
+          <span class="badge" data-tool="chatgpt">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Create AI Assistants</h3>
+          <p class="card-desc">Custom GPTs let you build your own version of ChatGPT that’s tuned to your role, tone, and resources — no coding required.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/create-ai-assistants" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="card" data-tool="forms">
+        <div class="card-media">
+          <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/0fbb3f2f-de8a-414a-9070-6f93e9af60af" alt="">
+          <span class="badge" data-tool="forms">ChatGPT</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Real-time Translations</h3>
+          <p class="card-desc">ChatGPT isn’t just for writing—it’s also a powerful translation tool. Upload a file, paste text, or use it as a live translator while chatting in another language.</p>
+          <a class="card-link" href="https://sites.google.com/aguafria.org/ai-hub/spotlight/real-time-translations" target="_blank">Learn more <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    /* =========================================================
+       !!! CONFIGURATION SECTION !!!
+       ========================================================= */
+    
+    // MODE: 'carousel' OR 'grid'
+    const MODE = 'carousel'; 
+
+    // SHOW FILTER BAR? (true or false)
+    // Set to 'true' for Master Page. Set to 'false' for specific pages.
+    const SHOW_FILTER_NAV = true; 
+
+    // STARTING FILTER: 'all', 'chatgpt', 'canva', 'word', 'forms', etc.
+    // Make sure this matches the badge text exactly (lowercase)
+    const INITIAL_CATEGORY = 'all';
+
+    // The View All Link
+    const VIEW_ALL_URL = 'https://sites.google.com/aguafria.org/ai-hub/spotlight';
+
+    /* ========================================================= */
+
+    (function(){
+      const carousel = document.getElementById('carousel');
+      const controlsGroup = document.getElementById('controlsGroup');
+      const filterNav = document.getElementById('filterNav');
+      const viewAllBtn = document.getElementById('viewAllBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.card');
+
+      let autoTimer = null;
+
+      // --- 1. SETUP UI BASED ON CONFIG ---
+      
+      if (MODE === 'grid') {
+        carousel.classList.add('is-grid');
+        controlsGroup.style.display = 'none';
+        document.body.style.overflowY = 'auto';
+      } else {
+        viewAllBtn.href = VIEW_ALL_URL;
+        startAuto();
+      }
+
+      if (!SHOW_FILTER_NAV && filterNav) {
+        filterNav.style.display = 'none';
+      }
+
+      applyFilter(INITIAL_CATEGORY);
+
+
+      // --- 2. ROBUST FILTER LOGIC ---
+      function applyFilter(category) {
+        stopAuto();
+
+        // Update Buttons
+        filterBtns.forEach(btn => {
+          if (btn.dataset.filter === category) btn.classList.add('active');
+          else btn.classList.remove('active');
+        });
+
+        // Hide/Show Cards
+        cards.forEach(card => {
+          // SMART CHECK: Look for data-tool on the Card OR the Badge inside it
+          const badge = card.querySelector('.badge');
+          const cardTool = card.getAttribute('data-tool') || (badge ? badge.getAttribute('data-tool') : '');
+          
+          // Compare (Case insensitive just to be safe)
+          const cleanTool = (cardTool || '').toLowerCase();
+          const cleanCategory = category.toLowerCase();
+
+          if (cleanCategory === 'all' || cleanTool === cleanCategory) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        // Scroll back to start
+        carousel.scrollTo({ left: 0, top: 0 });
+
+        // Restart Autoplay if needed
+        if (MODE === 'carousel') startAuto();
+      }
+
+      // Add Click Events to Filters
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          applyFilter(btn.dataset.filter);
+        });
+      });
+
+
+      // --- 3. SCROLL & AUTOPLAY LOGIC ---
+      function getScrollAmount() {
+        const card = carousel.querySelector('.card:not(.hidden)');
+        return card ? card.offsetWidth + 16 : 300;
+      }
+
+      function goNext() {
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        if (carousel.scrollLeft >= maxScroll - 10) {
+          carousel.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        }
+      }
+
+      function goPrev() {
+        if (carousel.scrollLeft <= 10) {
+          carousel.scrollTo({ left: carousel.scrollWidth, behavior: 'smooth' });
+        } else {
+          carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        }
+      }
+
+      function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(goNext, 5000);
+      }
+      function stopAuto() {
+        if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+      }
+
+      if (MODE === 'carousel') {
+        nextBtn.addEventListener('click', (e) => { e.preventDefault(); stopAuto(); goNext(); startAuto(); });
+        prevBtn.addEventListener('click', (e) => { e.preventDefault(); stopAuto(); goPrev(); startAuto(); });
+        carousel.addEventListener('mouseenter', stopAuto);
+        carousel.addEventListener('mouseleave', startAuto);
+      }
+
+    })();
+  </script>
 
 </body>
 </html>
+
