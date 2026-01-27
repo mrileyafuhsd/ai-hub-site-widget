@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Free Garden Guide</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  /* Overlay */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  /* Modal */
+  .modal {
+    width: 900px;
+    max-width: 95%;
+    background: #fff;
+    display: flex;
+    position: relative;
+  }
+
+  /* Left panel */
+  .left {
+    background: #f7e7b8;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left img {
+    max-width: 260px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.25);
+    border: 6px solid #fff;
+  }
+
+  /* Right panel */
+  .right {
+    padding: 36px 40px;
+    width: 420px;
+    box-sizing: border-box;
+  }
+
+  .close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 26px;
+    cursor: pointer;
+  }
+
+  h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #b32a1c;
+    font-size: 46px;
+    margin: 0 0 6px;
+  }
+
+  h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 28px;
+    margin: 0 0 16px;
+    font-weight: normal;
+  }
+
+  .fine-print {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 2px solid #cfcfcf;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    background: #b32a1c;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .no-thanks {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .modal {
+      flex-direction: column;
+    }
+    .right {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="close" id="closeBtn">✕</div>
+
+    <div class="left">
+      <!-- Replace with your real cover image -->
+      <img src="https://images.unsplash.com/photo-1492496913980-501348b61469?q=80&w=800&auto=format&fit=crop"
+           alt="How to Start a Garden">
+    </div>
+
+    <div class="right">
+      <h1>Free Guide</h1>
+      <h2>How to Start<br>A Vegetable Garden</h2>
+
+      <div class="fine-print">
+        You'll also subscribe to our Daily Newsletter & Partner Emails.
+        Msg & data rates may apply. See Terms & Privacy Policy.
+      </div>
+
+      <input type="email" id="email" placeholder="email@address.com (required)">
+
+      <button id="submitBtn">GET YOUR FREE GUIDE</button>
+
+      <div class="no-thanks" id="noThanks">No, thanks</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('closeBtn');
+  const noThanks = document.getElementById('noThanks');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function openModal() {
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Show popup after delay
+  setTimeout(openModal, 2000);
+
+  closeBtn.onclick = closeModal;
+  noThanks.onclick = closeModal;
+
+  submitBtn.onclick = () => {
+    const email = document.getElementById('email').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    // Replace with real form submission
+    alert('Thanks! (Demo only)');
+    closeModal();
+  };
+</script>
+
+</body>
+</html>
