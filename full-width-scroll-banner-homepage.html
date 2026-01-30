@@ -1,0 +1,272 @@
+<!-- Full-width single-image banner carousel (drop into Google Sites Embed) -->
+<div id="singleImageCarousel" class="single-image-carousel" aria-roledescription="carousel">
+  <div class="carousel-frame" id="carouselFrame" role="group" aria-label="Promotional carousel">
+
+    <!-- LEFT STACKED (icon on top, text + button below) -->
+    <div class="left-stack" aria-hidden="false">
+      <img id="siIcon" class="si-icon" src="" alt="">
+      <div class="si-content">
+        <div id="siTitle" class="si-title">Title</div>
+        <div id="siSubtitle" class="si-subtitle">Short description goes here</div>
+        <a id="siCta" class="si-cta" href="#" target="_blank" rel="noopener">View</a>
+      </div>
+    </div>
+
+    <!-- DOTS (bottom-left) -->
+    <div id="siDotsWrap" class="si-dots-wrap" aria-hidden="false">
+      <div id="siDots" class="si-dots" role="tablist" aria-label="Slides"></div>
+    </div>
+
+    <!-- NEXT BUTTON -->
+    <button id="siNext" class="si-next" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+        <path d="M9 6l6 6-6 6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+  </div>
+</div>
+
+<style>
+/* Reset/box model to avoid unexpected spacing inside embeds */
+#singleImageCarousel, #singleImageCarousel * { box-sizing: border-box; }
+
+/* Make the outer wrapper occupy the full width of its container without centering */
+.single-image-carousel{
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* Let the frame use the full width available from the embed (responsive) */
+.carousel-frame{
+  width: 100%;
+  max-width: 100%;
+  height: 260px; /* keep fixed height for now; change if you want responsive height */
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 18px 40px rgba(0,0,0,.10);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* LEFT STACK */
+.left-stack{
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  width: 38%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 4;
+  color: #fff;
+  align-items: flex-start;
+  text-shadow: 0 2px 8px rgba(0,0,0,.36);
+}
+.si-icon{
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.95);
+  object-fit: contain;
+  padding: 4px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.15);
+}
+.si-content{ display:flex; flex-direction:column; gap:6px; }
+.si-title{ font-size:22px; font-weight:700; line-height:1.06; }
+.si-subtitle{ font-size:13px; opacity:.95; max-width:92%; }
+.si-cta{
+  margin-top:6px;
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(0,0,0,.85);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  width:fit-content;
+}
+
+/* DOTS */
+.si-dots-wrap{
+  position: absolute;
+  left: 24px;
+  bottom: 16px;
+  z-index: 4;
+}
+.si-dots{ display:flex; gap:8px; }
+.si-dot{
+  width:9px;
+  height:9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.45);
+  border:0;
+  cursor:pointer;
+}
+.si-dot[aria-current="true"]{
+  background:#fff;
+  transform:scale(1.15);
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+
+/* NEXT BUTTON */
+.si-next{
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:0;
+  background:rgba(0,0,0,.18);
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
+}
+.si-next:hover{ background:rgba(0,0,0,.28); }
+
+.si-next:focus,
+.si-dot:focus,
+.si-cta:focus{
+  outline:3px solid rgba(255,255,255,.18);
+  outline-offset:2px;
+}
+
+/* Responsive tweaks: reduce left-stack width on smaller screens */
+@media (max-width: 800px) {
+  .carousel-frame{ height: 220px; border-radius: 16px; }
+  .left-stack{ left:16px; top:16px; width:46%; }
+  .si-title{ font-size:18px; }
+  .si-subtitle{ font-size:12px; }
+}
+@media (max-width: 480px) {
+  /* On very small screens switch to a centered top-left block for clarity */
+  .carousel-frame{ height: 220px; border-radius: 12px; }
+  .left-stack{
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    width: 62%;
+  }
+  .si-title{ font-size:16px; }
+  .si-subtitle{ font-size:12px; max-width:100%; }
+  .si-dot{ width:10px; height:10px; }
+}
+</style>
+
+<script>
+(function(){
+  const AUTO_MS = 4000;
+
+  /* ICON LIBRARY */
+  const iconsMap = {
+    chatgpt:    "https://aguafriaorg.finalsite.com/fs/resource-manager/view/04e41b96-e940-464d-9b24-5b19ab2b60ca",
+    gemini:     "https://aguafriaorg.finalsite.com/fs/resource-manager/view/374699b1-79be-4531-8d61-a6fe1b84b5ef",
+    notebooklm: "https://aguafriaorg.finalsite.com/fs/resource-manager/view/4df2b47b-9e20-4b2f-8e4e-312ebc2a1806",
+    canva:      "https://aguafriaorg.finalsite.com/fs/resource-manager/view/5c5ee997-4099-43fc-adf0-fc27c1ea3ec1",
+    district:   "https://aguafriaorg.finalsite.com/fs/resource-manager/view/e6845bf7-1e70-431d-8f5b-22d6c2a9d239"
+  };
+
+  /* SLIDES */
+  const slides = [
+    {
+      image: "https://aguafriaorg.finalsite.com/fs/resource-manager/view/5fe514b8-5744-4f20-a05c-9a76d95e1088",
+      iconKey: "district",
+      title: "District AI Integration Guide",
+      subtitle: "District AI guidance, policies, and expectations for staff and classrooms",
+      ctaText: "View",
+      ctaHref: "https://sites.google.com/aguafria.org/ai-hub/guidance-policies"
+    },
+    {
+      image: "https://aguafriaorg.finalsite.com/fs/resource-manager/view/4e181748-1e75-4866-99ce-3c26306d86ab",
+      iconKey: "chatgpt",
+      title: "Apps & Organizational Knowledge",
+      subtitle: "Connect ChatGPT to applications like Gmail, Google Drive, and Google Calendar",
+      ctaText: "Open",
+      ctaHref: "#"
+    }
+  ];
+
+  const frame = document.getElementById("carouselFrame");
+  const iconEl = document.getElementById("siIcon");
+  const titleEl = document.getElementById("siTitle");
+  const subEl = document.getElementById("siSubtitle");
+  const ctaEl = document.getElementById("siCta");
+  const dotsEl = document.getElementById("siDots");
+  const nextBtn = document.getElementById("siNext");
+  const root = document.getElementById("singleImageCarousel");
+
+  let idx = 0, timer = null, paused = false;
+
+  function buildDots(){
+    dotsEl.innerHTML = "";
+    slides.forEach((_,i)=>{
+      const b = document.createElement("button");
+      b.className = "si-dot";
+      b.type = "button";
+      b.setAttribute("aria-label","Go to slide " + (i+1));
+      b.setAttribute("aria-current", i===idx ? "true" : "false");
+      b.addEventListener("click", ()=>{ goTo(i); resetTimer(); });
+      dotsEl.appendChild(b);
+    });
+  }
+
+  function resolveIcon(sl){
+    if (sl.iconUrl) return sl.iconUrl;
+    if (sl.iconKey && iconsMap[sl.iconKey]) return iconsMap[sl.iconKey];
+    return "";
+  }
+
+  function render(){
+    const s = slides[idx];
+    frame.style.backgroundImage = `url("${s.image}")`;
+
+    const iconSrc = resolveIcon(s);
+    iconEl.src = iconSrc;
+    iconEl.alt = iconSrc ? s.title + " icon" : "";
+
+    titleEl.textContent = s.title;
+    subEl.textContent = s.subtitle;
+    ctaEl.textContent = s.ctaText;
+    ctaEl.href = s.ctaHref;
+
+    [...dotsEl.children].forEach((d,i)=>d.setAttribute("aria-current", i===idx));
+  }
+
+  function goTo(i){
+    idx = (i + slides.length) % slides.length;
+    render();
+  }
+  function next(){ goTo(idx + 1); }
+
+  function startTimer(){
+    clearInterval(timer);
+    timer = setInterval(()=>{ if(!paused) next(); }, AUTO_MS);
+  }
+  function resetTimer(){ startTimer(); }
+
+  root.addEventListener("mouseenter", ()=> paused = true);
+  root.addEventListener("mouseleave", ()=> paused = false);
+  root.addEventListener("focusin", ()=> paused = true);
+  root.addEventListener("focusout", ()=> paused = false);
+
+  nextBtn.addEventListener("click", ()=>{ next(); resetTimer(); });
+
+  buildDots();
+  render();
+  startTimer();
+})();
+</script>
