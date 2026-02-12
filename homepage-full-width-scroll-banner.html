@@ -1,8 +1,6 @@
-<!-- Full-width single-image banner carousel (drop into Google Sites Embed) -->
 <div id="singleImageCarousel" class="single-image-carousel" aria-roledescription="carousel">
   <div class="carousel-frame" id="carouselFrame" role="group" aria-label="Promotional carousel">
 
-    <!-- LEFT STACKED (icon on top, text + button below) -->
     <div class="left-stack" aria-hidden="false">
       <img id="siIcon" class="si-icon" src="" alt="">
       <div class="si-content">
@@ -12,12 +10,10 @@
       </div>
     </div>
 
-    <!-- DOTS (bottom-left) -->
     <div id="siDotsWrap" class="si-dots-wrap" aria-hidden="false">
       <div id="siDots" class="si-dots" role="tablist" aria-label="Slides"></div>
     </div>
 
-    <!-- NEXT BUTTON -->
     <button id="siNext" class="si-next" aria-label="Next slide">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
         <path d="M9 6l6 6-6 6"
@@ -36,7 +32,7 @@
 /* Reset/box model to avoid unexpected spacing inside embeds */
 #singleImageCarousel, #singleImageCarousel * { box-sizing: border-box; }
 
-/* Make the outer wrapper occupy the full width of its container without centering */
+/* Make the outer wrapper occupy the full width of its container */
 .single-image-carousel{
   width: 100%;
   display: block;
@@ -44,18 +40,18 @@
   padding: 0;
 }
 
-/* Let the frame use the full width available from the embed (responsive) */
+/* Tighter shadow to prevent "white line" bleed in iframes */
 .carousel-frame{
   width: 100%;
   max-width: 100%;
-  height: 260px; /* keep fixed height for now; change if you want responsive height */
+  height: 260px; 
   border-radius: 24px;
   overflow: hidden;
   position: relative;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  box-shadow: 0 18px 40px rgba(0,0,0,.10);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12); 
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
@@ -71,7 +67,7 @@
   z-index: 4;
   color: #fff;
   align-items: flex-start;
-  text-shadow: 0 2px 8px rgba(0,0,0,.36);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4); 
 }
 .si-icon{
   width: 48px;
@@ -80,7 +76,7 @@
   background: rgba(255,255,255,0.95);
   object-fit: contain;
   padding: 4px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 .si-content{ display:flex; flex-direction:column; gap:6px; }
 .si-title{ font-size:22px; font-weight:700; line-height:1.06; }
@@ -115,7 +111,7 @@
 .si-dot[aria-current="true"]{
   background:#fff;
   transform:scale(1.15);
-  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  box-shadow:0 3px 8px rgba(0,0,0,0.15);
 }
 
 /* NEXT BUTTON */
@@ -145,7 +141,7 @@
   outline-offset:2px;
 }
 
-/* Responsive tweaks: reduce left-stack width on smaller screens */
+/* Responsive tweaks */
 @media (max-width: 800px) {
   .carousel-frame{ height: 220px; border-radius: 16px; }
   .left-stack{ left:16px; top:16px; width:46%; }
@@ -153,7 +149,6 @@
   .si-subtitle{ font-size:12px; }
 }
 @media (max-width: 480px) {
-  /* On very small screens switch to a centered top-left block for clarity */
   .carousel-frame{ height: 220px; border-radius: 12px; }
   .left-stack{
     position: absolute;
