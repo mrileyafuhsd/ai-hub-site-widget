@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>District AI Assistant Library</title>
+
+<style>
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto;background:#f8fafc;color:#0f172a}
+.wrap{max-width:1100px;margin:auto;padding:24px}
+h1{margin:0;font-size:34px}
+.lead{color:#64748b;margin:10px 0 20px}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+input,select{padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;font-size:14px}
+button{cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;text-decoration:none;color:inherit;transition:.15s}
+.card:hover{border-color:#2563eb;transform:translateY(-2px)}
+.title{font-weight:700;margin-bottom:6px}
+.desc{font-size:13px;color:#64748b;margin-bottom:10px}
+.badge{font-size:10px;font-weight:700;padding:4px 6px;border-radius:8px;display:inline-block;margin-right:6px}
+.featured{background:#ede9fe;color:#6d28d9}
+.live{background:#d1fae5;color:#047857}
+.other{background:#fef3c7;color:#b45309}
+.cat{font-size:12px;color:#2563eb;background:#e0f2fe;padding:4px 6px;border-radius:8px}
+.meta{font-size:13px;color:#64748b;margin-bottom:12px}
+.empty{text-align:center;padding:40px;color:#64748b}
+footer{text-align:center;color:#94a3b8;margin-top:40px;font-size:13px}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>District AI Assistant Library</h1>
+<p class="lead">Browse and access specialized AI tools developed for district staff and students.</p>
+
+<div class="toolbar">
+<input id="search" type="text" placeholder="Search by name or description..."/>
+<select id="typeFilter">
+<option value="All">All Platforms</option>
+<option value="CustomGPT">CustomGPT</option>
+<option value="GeminiGEM">GeminiGEM</option>
+<option value="NotebookLM">NotebookLM</option>
+</select>
+</div>
+
+<div id="count" class="meta"></div>
+<div id="grid" class="grid"></div>
+<div id="empty" class="empty" style="display:none;">No assistants found.</div>
+
+<footer>© <span id="year"></span> District AI Assistant Library</footer>
+
+</div>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRZ-di_uyJ4ngpixhZra_mGqmqpQaYkgCHEKNqABqzKXS1tvUarpuKuAKE_OlESqwCCH1xOZnjx5O-1/pub?output=csv";
+
+let assistants = [];
+let searchQuery = "";
+let selectedType = "All";
+
+const $ = id => document.getElementById(id);
+
+function parseCSV(text){
+  const rows=[];
+  let row=[],cur="",inQuotes=false;
+  for(let i=0;i<text.length;i++){
+    const ch=text[i],next=text[i+1];
+    if(ch=='"' && inQuotes && next=='"'){cur+='"';i++;continue;}
+    if(ch=='"'){inQuotes=!inQuotes;continue;}
+    if(ch==',' && !inQuotes){row.push(cur);cur="";continue;}
+    if((ch=='\n'||ch=='\r')&&!inQuotes){
+      if(ch=='\r'&&next=='\n')i++;
+      row.push(cur);rows.push(row);row=[];cur="";continue;
+    }
+    cur+=ch;
+  }
+  row.push(cur);rows.push(row);
+  return rows;
+}
+
+function render(){
+  const grid=$("grid");
+  const empty=$("empty");
+  grid.innerHTML="";
+  const q=searchQuery.toLowerCase();
+  const filtered=assistants.filter(a=>{
+    const matchSearch=!q||a.name.toLowerCase().includes(q)||a.description.toLowerCase().includes(q);
+    const matchType=selectedType==="All"||a.type===selectedType;
+    return matchSearch&&matchType;
+  });
+  $("count").textContent="Found "+filtered.length+" assistant"+(filtered.length===1?"":"s");
+  if(!filtered.length){empty.style.display="block";return;} else empty.style.display="none";
+  filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  filtered.forEach(a=>{
+    const card=document.createElement("a");
+    card.className="card";
+    card.href=a.url;
+    card.target="_blank";
+    const statusClass=a.status.toLowerCase()==="featured"?"featured":
+                      a.status.toLowerCase()==="live"?"live":"other";
+    card.innerHTML=`
+      <div class="badge ${statusClass}">${a.status}</div>
+      <div class="title">${a.name}</div>
+      <div class="desc">${a.description}</div>
+      <div class="cat">${a.category}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+async function load(){
+  const res=await fetch(CSV_URL);
+  const text=await res.text();
+  const rows=parseCSV(text);
+  const headers=rows[0].map(h=>h.toLowerCase().trim());
+  const data=rows.slice(1);
+  const idx={
+    name:headers.findIndex(h=>h.includes("name")),
+    type:headers.findIndex(h=>h.includes("type")||h.includes("platform")),
+    status:headers.findIndex(h=>h.includes("status")),
+    category:headers.findIndex(h=>h.includes("category")),
+    url:headers.findIndex(h=>h.includes("url")||h.includes("link")),
+    description:headers.findIndex(h=>h.includes("description"))
+  };
+  assistants=data.map(r=>({
+    name:r[idx.name]||"",
+    type:r[idx.type]||"",
+    status:r[idx.status]||"Live",
+    category:r[idx.category]||"Other",
+    url:r[idx.url]||"#",
+    description:r[idx.description]||""
+  })).filter(a=>a.name);
+  render();
+}
+
+$("search").addEventListener("input",e=>{searchQuery=e.target.value;render();});
+$("typeFilter").addEventListener("change",e=>{selectedType=e.target.value;render();});
+$("year").textContent=new Date().getFullYear();
+
+load();
+</script>
+</body>
+</html>
