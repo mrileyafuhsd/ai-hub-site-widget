@@ -26,6 +26,9 @@
         /* Custom scrollbar for category list */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Smooth transitions for loading states */
+        #loading-screen { transition: opacity 0.3s ease-out; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
@@ -41,7 +44,10 @@
         <div id="error-container" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 text-red-700 shadow-sm">
             <div class="flex items-center gap-3">
                 <i data-lucide="alert-circle" class="w-5 h-5 shrink-0"></i>
-                <p id="error-message" class="text-sm font-medium"></p>
+                <div>
+                    <p class="text-sm font-bold">Sync Error</p>
+                    <p id="error-message" class="text-xs opacity-90"></p>
+                </div>
             </div>
             <button onclick="fetchData()" class="flex items-center gap-2 px-4 py-2 bg-red-100 hover:bg-red-200 rounded-lg text-sm font-bold transition-colors shrink-0">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
@@ -195,7 +201,7 @@
         function parseCSV(text) {
             if (!text || text.trim().length === 0) return [];
             const lines = text.split(/\r?\n/).filter(line => line.trim() !== "");
-            if (lines.length < 2) return [];
+            if (lines.length < 1) return [];
 
             function parseLine(line) {
                 const result = [];
@@ -219,7 +225,8 @@
                 return result;
             }
 
-            const headers = parseLine(lines[0]).map(h => h.toLowerCase());
+            const headers = parseLine(lines[0]).map(h => h.toLowerCase().trim());
+            
             return lines.slice(1).map((line, index) => {
                 const values = parseLine(line);
                 const entry = {};
@@ -233,24 +240,27 @@
                     url: entry.url || "#",
                     description: entry.description || ""
                 };
-            });
+            }).filter(item => item.name !== "Untitled Assistant" || item.description !== "");
         }
 
         /**
          * Fetch Data Logic
          */
         async function fetchData() {
-            loadingScreen.classList.remove('hidden');
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.opacity = '1';
             errorContainer.classList.add('hidden');
             refreshIcon.classList.add('animate-spin');
 
             const proxies = [
-                "", // Direct
-                "https://corsproxy.io/?", 
-                "https://api.allorigins.win/raw?url="
+                "", // Strategy 1: Direct (Best performance, supports Google CORS usually)
+                "https://corsproxy.io/?", // Strategy 2: Fast Proxy
+                "https://api.allorigins.win/raw?url=", // Strategy 3: Highly reliable
+                "https://thingproxy.freeboard.io/fetch/" // Strategy 4: Fallback
             ];
 
             let success = false;
+            let finalErrorMessage = "The Google Sheet failed to respond.";
 
             for (const proxy of proxies) {
                 try {
@@ -259,8 +269,14 @@
                         ? `${proxy}${encodeURIComponent(SHEET_CSV_URL + cacheBuster)}` 
                         : `${SHEET_CSV_URL}${cacheBuster}`;
 
-                    const response = await fetch(targetUrl);
-                    if (!response.ok) throw new Error();
+                    console.log(`Trying fetch strategy: ${proxy || 'Direct connection'}...`);
+                    
+                    const response = await fetch(targetUrl, {
+                        method: 'GET',
+                        cache: 'no-store'
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     
                     const text = await response.text();
                     const data = parseCSV(text);
@@ -268,22 +284,28 @@
                     if (data.length > 0) {
                         assistants = data;
                         success = true;
+                        console.log("Fetch successful.");
                         break;
+                    } else {
+                        throw new Error("CSV parsed but no valid rows found.");
                     }
                 } catch (e) {
-                    console.warn("Strategy failed, trying next...");
+                    console.warn(`Strategy with proxy "${proxy || 'direct'}" failed:`, e.message);
+                    finalErrorMessage = e.message;
                 }
             }
 
             refreshIcon.classList.remove('animate-spin');
-            loadingScreen.classList.add('hidden');
-
+            
             if (success) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 300);
                 updateFiltersUI();
                 render();
             } else {
+                loadingScreen.style.display = 'none';
                 errorContainer.classList.remove('hidden');
-                errorMessage.textContent = "Unable to sync with Google Sheets. Please verify the spreadsheet is 'Published to Web' as a CSV.";
+                errorMessage.textContent = `Unable to sync with Google Sheets (${finalErrorMessage}). Please ensure the 'Publish to Web' link is active and reachable from your network.`;
             }
         }
 
