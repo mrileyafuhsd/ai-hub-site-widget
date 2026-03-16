@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Policy & Guidance Digital Backpack</title>
+  <style>
+    :root {
+      --card-bg: #ffffff;
+      --body-bg: #ffffff; /* Updated to white */
+      --text-main: #2d3748;
+      --text-muted: #718096;
+      --border-color: #e2e8f0;
+      --pill-bg: #f8fafc;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--body-bg);
+      color: var(--text-main);
+    }
+
+    .page-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Aligned to top to minimize vertical space */
+      min-height: auto; /* Removed 100vh to minimize vertical space */
+      padding: 0; /* Minimized padding */
+    }
+
+    /* Main Container - Adjusted to 97% width */
+    .main-layout {
+      display: flex;
+      flex-direction: column;
+      width: 97%;
+      max-width: 97%;
+      gap: 24px;
+      margin: 0 auto; /* Centered with no vertical margin */
+    }
+
+    /* Card Content */
+    .content-card {
+      background-color: var(--card-bg);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* Three-column Grid: Video Column + 2 Button Columns */
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    /* Pill/Button Styling */
+    .pill-link {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: var(--pill-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+
+    .pill-link:hover {
+      border-color: #cbd5e0;
+      background-color: #f1f5f9;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Video Pill: Spans 4 rows on the left, starts from row 2 because of labels */
+    .pill-video {
+      grid-column: 1;
+      grid-row: 2 / span 4;
+      display: block;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      height: 100%;
+      margin: 0;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+    }
+
+    .video-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+    }
+
+    .video-placeholder-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-link:hover .video-placeholder-img {
+      opacity: 1;
+    }
+
+    .play-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .video-link:hover .play-overlay {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 16px solid #2d3748;
+      margin-left: 4px;
+    }
+
+    .pill-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .pill-text {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 800px) {
+      .button-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .label-video {
+        grid-column: span 2;
+        grid-row: 1;
+      }
+      .label-policy {
+        grid-column: span 2;
+        grid-row: 3;
+        margin-top: 12px;
+      }
+      .pill-video {
+        grid-column: span 2;
+        grid-row: 2;
+        aspect-ratio: 16 / 9;
+        margin-bottom: 8px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .content-card {
+        padding: 24px;
+      }
+      .button-grid {
+        grid-template-columns: 1fr;
+      }
+      .label-video, .label-policy, .pill-video {
+        grid-column: span 1;
+      }
+      /* Ensure sequential order on mobile */
+      .label-video { grid-row: 1; }
+      .pill-video { grid-row: 2; }
+      .label-policy { grid-row: 3; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+    <main class="main-layout">
+
+      <!-- Single Card Container -->
+      <section class="content-card">
+        
+        <div class="button-grid">
+          <!-- Labels Row -->
+          <span class="section-label label-video" style="grid-column: 1;">AI Guidance Showcase (Part 1)</span>
+          <span class="section-label label-policy" style="grid-column: 2 / span 2;">Policy &amp; Explainers</span>
+          
+          <!-- LEFT COLUMN: Video (Updated Link & Positioned below its label) -->
+          <div class="pill-link pill-video">
+            <div class="video-container">
+              <a href="https://drive.google.com/file/d/1_HT9Tsyr-oXtCyhoeDPYMzcVD8PbAPoM/view" target="_blank" class="video-link">
+                <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/00feb6ce-7075-4e70-bbcf-8e3db4c4b948" alt="Video Thumbnail" class="video-placeholder-img">
+                <div class="play-overlay">
+                  <div class="play-icon"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- Buttons (Columns 2 and 3) -->
+          <a href="https://www.canva.com/design/DAG86LlD7-4/TsvbsubxOusFfsyB9Otpsw/view?utm_content=DAG86LlD7-4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdc79809506" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Guidance One-Pager</span>
+          </a>
+
+          <a href="https://www.canva.com/design/DAG_04c94fg/PPgF-OjwO82NGMDfWrfxGg/view?utm_content=DAG_04c94fg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h787eebea05" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Data Privacy Guide</span>
+          </a>
+
+          <a href="https://www.canva.com/design/DAG_6l0Y8jk/HoD-G_3-9yS11E0wGE63xA/view?utm_content=DAG_6l0Y8jk&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h79ed98c3da" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Software Building</span>
+          </a>
+
+          <a href="https://app.screencastify.com/watch/uH3ShhBlFjBtRj4eItn9" target="_blank" class="pill-link">
+            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
+            <span class="pill-text">Using AI with Care</span>
+          </a>
+
+          <a href="https://app.screencastify.com/watch/qK9YLIDuXEiuKrFe0SJ8" target="_blank" class="pill-link">
+            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
+            <span class="pill-text">Using Digital Likeness</span>
+          </a>
+
+          <a href="https://app.screencastify.com/watch/uGIbq2eEMJ6VfJfpKlhp" target="_blank" class="pill-link">
+            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
+            <span class="pill-text">Stoplight (Red Bot)</span>
+          </a>
+
+          <a href="https://app.screencastify.com/watch/hqathPMnlZpvInpiKMu3" target="_blank" class="pill-link">
+            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
+            <span class="pill-text">Stoplight (Yellow)</span>
+          </a>
+
+          <a href="https://app.screencastify.com/watch/Rlusx0hJsieOWnLYcU31" target="_blank" class="pill-link">
+            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
+            <span class="pill-text">Stoplight (Green Bot)</span>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
