@@ -261,7 +261,7 @@
         
         <div class="button-grid">
           <!-- Labels Row -->
-          <h1 class="label-video">AI Guidance Showcase (Part 1)</h1>
+          <h1 class="label-video">AI Guidance Showcase (Part 2)</h1>
           <div class="label-policy-container">
             <span class="section-label">Policy &amp; Explainers</span>
             <a href="https://sites.google.com/aguafria.org/ai-hub/guidance-policies" target="_blank" class="view-all-btn">View All</a>
@@ -270,8 +270,8 @@
           <!-- LEFT COLUMN: Video (Updated Link & Positioned below its label) -->
           <div class="pill-link pill-video">
             <div class="video-container">
-              <a href="https://drive.google.com/file/d/1_HT9Tsyr-oXtCyhoeDPYMzcVD8PbAPoM/view" target="_blank" class="video-link">
-                <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/7e37145f-2358-4934-a97e-424f30e4a753" alt="Video Thumbnail" class="video-placeholder-img">
+              <a href="https://www.youtube.com/playlist?list=PLP7Bvyb3ap46BI2SOtXWZitbnAl7zpsU3" target="_blank" class="video-link">
+                <img src="https://aguafriaorg.finalsite.com/fs/resource-manager/view/d671b7ec-fb9c-4df3-9de7-930231156122" alt="Video Thumbnail" class="video-placeholder-img">
                 <div class="play-overlay">
                   <div class="play-icon"></div>
                 </div>
@@ -280,44 +280,44 @@
           </div>
 
           <!-- Buttons (Columns 2 and 3) -->
-          <a href="https://www.canva.com/design/DAG86LlD7-4/TsvbsubxOusFfsyB9Otpsw/view?utm_content=DAG86LlD7-4&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdc79809506" target="_blank" class="pill-link">
+          <a href="https://drive.google.com/file/d/1t1sJSAEjfLtEHX9KzI-2nbFoI0xHKxg5/view" target="_blank" class="pill-link">
             <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
-            <span class="pill-text">Guidance One-Pager</span>
+            <span class="pill-text">Teaching AI in Math</span>
           </a>
 
-          <a href="https://www.canva.com/design/DAG_04c94fg/PPgF-OjwO82NGMDfWrfxGg/view?utm_content=DAG_04c94fg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h787eebea05" target="_blank" class="pill-link">
+          <a href="https://drive.google.com/file/d/1ndixmSbXNXspp-0u9b3SfNr_XDLwzWpq/view?usp=sharing" target="_blank" class="pill-link">
             <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
-            <span class="pill-text">Data Privacy Guide</span>
+            <span class="pill-text">Teaching AI in Humanities (ELA/SS)</span>
           </a>
 
-          <a href="https://www.canva.com/design/DAG_6l0Y8jk/HoD-G_3-9yS11E0wGE63xA/view?utm_content=DAG_6l0Y8jk&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h79ed98c3da" target="_blank" class="pill-link">
+          <a href="https://drive.google.com/file/d/16eGinKZgIAFGI0ERQYHbDgV5dpherbLB/view?usp=sharing" target="_blank" class="pill-link">
             <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
-            <span class="pill-text">Software Building</span>
+            <span class="pill-text">Teaching AI in Science</span>
           </a>
 
-          <a href="https://app.screencastify.com/watch/uH3ShhBlFjBtRj4eItn9" target="_blank" class="pill-link">
+          <a href="https://app.screencastify.com/watch/Mrm6JXwbxeJVnbz3tyoy" target="_blank" class="pill-link">
             <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
-            <span class="pill-text">Using AI with Care</span>
+            <span class="pill-text">Teaching AI In CTE Explainer</span>
           </a>
 
-          <a href="https://app.screencastify.com/watch/qK9YLIDuXEiuKrFe0SJ8" target="_blank" class="pill-link">
-            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
-            <span class="pill-text">Using Digital Likeness</span>
+          <a href="https://docs.google.com/document/d/1vckUECaxcHRaNwFUeCXQY_KDwy-GgxV3DcyALfFso34/edit?tab=t.0#heading=h.6c4d5l7sk9c7" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Teaching AI In CTE Lesson Plan Example</span>
           </a>
 
-          <a href="https://app.screencastify.com/watch/uGIbq2eEMJ6VfJfpKlhp" target="_blank" class="pill-link">
-            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
-            <span class="pill-text">Stoplight (Red Bot)</span>
+          <a href="https://drive.google.com/file/d/1yEkl5H45zFYl_2EAPPcXc4UlxM5mRwE-/view?usp=sharing" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Teaching AI with ESS/ELL</span>
           </a>
 
-          <a href="https://app.screencastify.com/watch/hqathPMnlZpvInpiKMu3" target="_blank" class="pill-link">
-            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
-            <span class="pill-text">Stoplight (Yellow)</span>
+          <a href="https://docs.google.com/presentation/d/1kq1wVdvifswTEtGpX2oap0lwagY_8I45/edit?slide=id.p1#slide=id.p1" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Teaching AI in the Arts</span>
           </a>
 
-          <a href="https://app.screencastify.com/watch/Rlusx0hJsieOWnLYcU31" target="_blank" class="pill-link">
-            <img src="https://www.google.com/s2/favicons?sz=64&domain=youtube.com" class="pill-icon" alt="">
-            <span class="pill-text">Stoplight (Green Bot)</span>
+          <a href="https://www.canva.com/design/DAHEC8XmYOs/zS-r8hOIXu2lTvZyOsz_gA/view?utm_content=DAHEC8XmYOs&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7ba2a7bc3f" target="_blank" class="pill-link">
+            <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_document_x64.png" class="pill-icon" alt="">
+            <span class="pill-text">Feedback and Grading</span>
           </a>
 
         </div>
